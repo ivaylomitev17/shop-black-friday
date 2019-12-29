@@ -27,12 +27,10 @@ public class Order {
         preparedStatement.setDate(2, date);
         int rowAffected = preparedStatement.executeUpdate();
         System.out.println("row Afected: "+rowAffected);
-        if(rowAffected == 1)
-        {
+        if(rowAffected == 1) {
             resultSetGetGeneratedKeyOrders = preparedStatement.getGeneratedKeys();
             if(resultSetGetGeneratedKeyOrders.next())
                 generatedOrderId = resultSetGetGeneratedKeyOrders.getInt(1);
-
         }
 
         if (resultSetGetGeneratedKeyOrders!=null&&generatedOrderId!=-1){
