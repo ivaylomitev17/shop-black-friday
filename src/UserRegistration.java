@@ -1,11 +1,8 @@
-import javax.jws.soap.SOAPBinding;
-import javax.swing.plaf.nimbus.State;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,8 +24,6 @@ public class UserRegistration extends User implements UserVerification {
     public void setUsername() throws IOException {
         System.out.println("Input username");
         String username = sc.nextLine();
-        System.out.println(username);
-        System.out.println(USERNAME_PATTERN);
         if (userVerification(username,USERNAME_PATTERN)){
             super.setUsername(username);
         }
@@ -66,8 +61,6 @@ public class UserRegistration extends User implements UserVerification {
     public boolean userVerification(String userdata, String patternToCompare) {
         pattern = Pattern.compile(USERNAME_PATTERN);
         matcher = pattern.matcher(userdata);
-        System.out.println(matcher.matches());
         return matcher.matches();
-        //return false;
     }
 }
