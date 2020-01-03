@@ -1,5 +1,8 @@
 package tu.sofia.shop.black.friday;
 
+import tu.sofia.shop.black.friday.model.Product;
+import tu.sofia.shop.black.friday.service.ProductService;
+
 import java.io.IOException;
 import java.sql.*;
 import java.util.Calendar;

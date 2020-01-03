@@ -20,12 +20,8 @@ public class User {
 
     private String username;
     private String passwordHash;
-    // You can add an user type here - either customer, or shop administrator
+    private boolean isEmployee;
 
-    public User() {
-        // Such constructor declaration is not needed. If no other constructor is defined, there is automatically generated no-argument constructor
-        // and within it all fields are initialized with the default value of the particular type
-    }
 
     public String getUsername() {
         return username;
