@@ -1,9 +1,15 @@
+package tu.sofia.shop.black.friday.util;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
 
 public class ConnectionToDB {
+
+    // The class could be named DatabaseConnectionUtil
+    // It shall contain only methods for database connection handling
+    // SQL statements could be extracted in another utility class
 
     private Connection connection;
     private Statement statement;
@@ -15,10 +21,10 @@ public class ConnectionToDB {
 
 
     public void createConnection() throws Exception{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            this.connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/ShopDB", "root", "root");
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ShopDB", "root", "root");
 
+        // return the connection and use it in services
     }
 
 

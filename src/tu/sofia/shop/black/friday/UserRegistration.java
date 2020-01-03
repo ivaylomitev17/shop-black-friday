@@ -1,6 +1,10 @@
+package tu.sofia.shop.black.friday;
+
+import tu.sofia.shop.black.friday.model.User;
+import tu.sofia.shop.black.friday.util.ConnectionToDB;
+import tu.sofia.shop.black.friday.util.CreateSHA256;
+
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -42,7 +46,7 @@ public class UserRegistration extends User implements UserVerification {
     }
     public void addUser(){
     try{
-       // Connection connection = new ConnectionToDB().createConnection();
+       // Connection connection = new tu.sofia.shop.black.friday.util.ConnectionToDB().createConnection();
         String query = "insert into users(username,passwordHash,isEmployee) values ('" + super.getUsername() + "','" + super.getPasswordHash() + "','" + 0+ "')";
         ConnectionToDB connection = new ConnectionToDB();
         connection.createConnection();

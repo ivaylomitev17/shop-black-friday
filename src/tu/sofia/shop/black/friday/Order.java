@@ -1,3 +1,7 @@
+package tu.sofia.shop.black.friday;
+
+import tu.sofia.shop.black.friday.util.ConnectionToDB;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
