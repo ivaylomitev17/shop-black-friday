@@ -1,5 +1,5 @@
 package tu.sofia.shop.black.friday.service;
-import tu.sofia.shop.black.friday.UserVerification;
+import tu.sofia.shop.black.friday.model.UserVerification;
 import tu.sofia.shop.black.friday.model.User;
 import tu.sofia.shop.black.friday.util.DatabaseControlUnit;
 import tu.sofia.shop.black.friday.util.CreateSHA256;
