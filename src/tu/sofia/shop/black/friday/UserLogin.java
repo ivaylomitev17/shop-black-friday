@@ -1,3 +1,9 @@
+package tu.sofia.shop.black.friday;
+
+import tu.sofia.shop.black.friday.model.User;
+import tu.sofia.shop.black.friday.util.ConnectionToDB;
+import tu.sofia.shop.black.friday.util.CreateSHA256;
+
 import java.sql.ResultSet;
 import java.sql.Statement;
 

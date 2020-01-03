@@ -1,8 +1,14 @@
+package tu.sofia.shop.black.friday.model;
+
+import tu.sofia.shop.black.friday.util.ConnectionToDB;
+
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
 
 public class Product {
+    // Keep it as a simple object → fields, constructors, getters & setters. If needed, override hashCode(), equals() and toString().
+    // Extract the functional methods in service - see ProductService.java
     private int id;
     private String name;
     private double price;
