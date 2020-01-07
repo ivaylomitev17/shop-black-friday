@@ -1,21 +1,13 @@
 package tu.sofia.shop.black.friday.util;
 
-import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class DatabaseManipulation extends DatabaseControlUnit{
+public  interface  DatabaseManipulation <T>{
+    void updateDatabase(String column, String value, String  condition) throws SQLException;
+    void insertIntoDatabase(T o) throws SQLException;
+    ResultSet selectFromDatabase(String whereCondition) throws SQLException;
+    void setConnection(Connection connection);
 
-    private Statement statement;
-    public void updateDatabase(String table, String set, String update, String where, String condition) throws Exception{
-
-        String query = "UPDATE "+table+"\n SET "+set+" = '"+update+"'\n WHERE "+where+"='" + condition+"'";
-        this.statement = createStatement();
-        statement.executeUpdate(query);
-        super.getConnection().close();
-    }
-
-    public void insertIntoDatabase(String query)throws Exception{
-        this.statement = createStatement();
-        statement.executeUpdate(query);
-        super.getConnection().close();
-    }
 }
