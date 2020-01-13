@@ -12,15 +12,21 @@ public class DatabaseControlUnit {
     private List<Connection> connectionPool;
     private List<Connection>usedConnections = new ArrayList<Connection>();
     private final int MAX_CONNECTIONS = 10;
+    private static DatabaseControlUnit databaseControlUnit = new DatabaseControlUnit( );
+    private DatabaseControlUnit (){
+        createConnectionPool();
+    }
+    public static DatabaseControlUnit getInstance( ) {
+        return databaseControlUnit;
+    }
 
-    public DatabaseControlUnit (){
-        List<Connection> pool = new ArrayList<>(MAX_CONNECTIONS);
+    private void createConnectionPool(){
+        connectionPool = new ArrayList<>(MAX_CONNECTIONS);
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
             try {
-                pool.add(createConnection());
+                connectionPool.add(createConnection());
             } catch (SQLException e) {
             }catch (ClassNotFoundException e){
-
             }
 
 

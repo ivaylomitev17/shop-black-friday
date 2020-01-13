@@ -2,6 +2,7 @@ package tu.sofia.shop.black.friday.service;
 
 import tu.sofia.shop.black.friday.Exceptions.NewPriceLowerThanMinimumException;
 import tu.sofia.shop.black.friday.model.Product;
+import tu.sofia.shop.black.friday.util.DatabaseControlUnit;
 import tu.sofia.shop.black.friday.util.DatabaseManipulation;
 
 import java.sql.Connection;
@@ -10,18 +11,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ProductService implements DatabaseManipulation <Product>{
-    Connection connection;
 
-    public ResultSet findProductByName(String name) throws Exception{
-        String whereCondition = "name = ";
-        whereCondition.concat(name);
-        ResultSet resultSet = selectFromDatabase(whereCondition);
+    public ResultSet findProductByName(String name) throws SQLException{
+        Product productToFind = new Product();
+        productToFind.setName(name);
+        ResultSet resultSet = selectFromDatabase(productToFind);
         resultSet.first();
         return resultSet;
     }
 
 
-    public void updateProductPrice(String name, double newPrice)throws Exception{
+    public void updateProductPrice(String name, double newPrice)throws NewPriceLowerThanMinimumException,SQLException{
          ResultSet resultSet = findProductByName(name);
         if ((Double.compare(newPrice,Double.parseDouble(resultSet.getString(4))))>0){
             updateDatabase("price",Double.toString(newPrice),"id = "+resultSet.getString(1));
@@ -31,18 +31,20 @@ public class ProductService implements DatabaseManipulation <Product>{
 
     @Override
     public void updateDatabase(String column, String value, String condition) throws SQLException {
-
+        Connection connection = DatabaseControlUnit.getInstance().getConnection();
         String query = "UPDATE products SET ? = ? WHERE?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,column);
         preparedStatement.setString(2,value);
         preparedStatement.setString(3,condition);
         preparedStatement.executeUpdate();
+        DatabaseControlUnit.getInstance().releaseConnection(connection);
 
     }
 
     @Override
     public void insertIntoDatabase(Product product) throws SQLException{
+        Connection connection = DatabaseControlUnit.getInstance().getConnection();
         String query = "INSERT INTO products(name, price,priceMin,quantity,status,blackFridayDiscountPercentage) VALUES (?,?,?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1,product.getName());
@@ -52,20 +54,20 @@ public class ProductService implements DatabaseManipulation <Product>{
         preparedStatement.setString(5,"'BlackFridayOFF'");
         preparedStatement.setDouble(6,product.getBlackFridayDiscount());
         preparedStatement.executeUpdate();
-
+        DatabaseControlUnit.getInstance().releaseConnection(connection);
     }
 
     @Override
-    public ResultSet selectFromDatabase(String whereCondition) throws SQLException   {
-        String query  = "SELECT * FROM products WHERE ?";
+    public ResultSet selectFromDatabase(Product product) throws SQLException   {
+        Connection  connection = DatabaseControlUnit.getInstance().getConnection();
+        String query  = "SELECT * FROM products WHERE name = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1,whereCondition);
-
-        return preparedStatement.executeQuery()  ;
+        preparedStatement.setString(1, product.getName());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        DatabaseControlUnit.getInstance().releaseConnection(connection);
+        return resultSet;
     }
 
-    @Override
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
+
+
 }
