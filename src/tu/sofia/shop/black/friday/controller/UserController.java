@@ -1,6 +1,6 @@
 package tu.sofia.shop.black.friday.controller;
-import tu.sofia.shop.black.friday.Exceptions.IncorrectPasswordException;
-import tu.sofia.shop.black.friday.Exceptions.IncorrectUsernameException;
+import tu.sofia.shop.black.friday.exceptions.IncorrectPasswordException;
+import tu.sofia.shop.black.friday.exceptions.IncorrectUsernameException;
 import tu.sofia.shop.black.friday.service.UserService;
 
 import java.io.IOException;
@@ -18,7 +18,6 @@ public class UserController {
         }catch (IOException e){
             e.printStackTrace();
         }
-
     }
 
     public void login (String toRun) {
@@ -49,7 +48,7 @@ public class UserController {
             new UserService().userRegistration(parameters[0],parameters[1]);
             printStream.println("Successful");
         }catch (SQLException e){
-            e.printStackTrace();
+            printStream.println("Error");
         }catch (IncorrectUsernameException e){
             printStream.println("Incorrect username");
         }catch (IncorrectPasswordException e){

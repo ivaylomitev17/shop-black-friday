@@ -1,4 +1,4 @@
-package tu.sofia.shop.black.friday.Exceptions;
+package tu.sofia.shop.black.friday.exceptions;
 
 public class NewPriceLowerThanMinimumException extends Exception {
     @Override

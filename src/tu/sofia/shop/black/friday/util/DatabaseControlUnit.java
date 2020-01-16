@@ -13,6 +13,7 @@ public class DatabaseControlUnit {
     private List<Connection>usedConnections = new ArrayList<Connection>();
     private final int MAX_CONNECTIONS = 10;
     private static DatabaseControlUnit databaseControlUnit = new DatabaseControlUnit( );
+
     private DatabaseControlUnit (){
         createConnectionPool();
     }
@@ -26,7 +27,9 @@ public class DatabaseControlUnit {
             try {
                 connectionPool.add(createConnection());
             } catch (SQLException e) {
+                e.printStackTrace();
             }catch (ClassNotFoundException e){
+                e.printStackTrace();
             }
 
 
@@ -35,8 +38,9 @@ public class DatabaseControlUnit {
 
     private Connection createConnection() throws SQLException,ClassNotFoundException{
         Class.forName("com.mysql.cj.jdbc.Driver");
-       return DriverManager.getConnection("jdbc:mysql://localhost:3306/ShopDB",
-               "root", "root");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/ShopDB",
+                "root", "root");
+
     }
 
     public boolean releaseConnection(Connection connection) {

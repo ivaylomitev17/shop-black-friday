@@ -1,6 +1,5 @@
 package tu.sofia.shop.black.friday.service;
 
-import tu.sofia.shop.black.friday.Exceptions.NewPriceLowerThanMinimumException;
 import tu.sofia.shop.black.friday.model.Product;
 import tu.sofia.shop.black.friday.util.DatabaseControlUnit;
 import tu.sofia.shop.black.friday.util.DatabaseManipulation;
@@ -20,23 +19,60 @@ public class ProductService implements DatabaseManipulation <Product>{
         return resultSet;
     }
 
+    public ResultSet findProductById(int id) throws SQLException{
 
-    public void updateProductPrice(String name, double newPrice)throws NewPriceLowerThanMinimumException,SQLException{
-         ResultSet resultSet = findProductByName(name);
-        if ((Double.compare(newPrice,Double.parseDouble(resultSet.getString(4))))>0){
-            updateDatabase("price",Double.toString(newPrice),"id = "+resultSet.getString(1));
-       }
-        else throw new NewPriceLowerThanMinimumException();
+        ResultSet resultSet = selectFromDatabaseById(id);
+        resultSet.first();
+        return resultSet;
     }
 
+
+    public void updateProductPrice(String column,String newPrice,String id)throws SQLException{
+        ResultSet resultSet = findProductById(Integer.parseInt(id));
+        resultSet.first();
+        if (Double.compare(resultSet.getDouble(4),Double.parseDouble(newPrice))<0){
+            updateDatabase(column,newPrice,id);
+        }
+    }
+
+    public void updateDatabaseBlackFriday(String discount, String status, String[] id)throws SQLException {
+        Connection connection = DatabaseControlUnit.getInstance().getConnection();
+        String query = "UPDATE products SET status = ?, blackFridayDiscountPercentage = ? WHERE id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        for (int i = 0; i < id.length; i++) {
+                preparedStatement.setString(1, status);
+                preparedStatement.setString(2, discount);
+                preparedStatement.setString(3, id[i]);
+                preparedStatement.executeUpdate();
+            }
+        DatabaseControlUnit.getInstance().releaseConnection(connection);
+        }
+
+    public ResultSet selectFromDatabaseById(int id) throws SQLException {
+        Connection  connection = DatabaseControlUnit.getInstance().getConnection();
+        String query  = "SELECT * FROM products WHERE id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, Integer.toString(id));
+        ResultSet resultSet = preparedStatement.executeQuery();
+        DatabaseControlUnit.getInstance().releaseConnection(connection);
+        return resultSet;
+    }
+
+    public ResultSet selectFromDatabaseAll() throws SQLException{
+        Connection  connection = DatabaseControlUnit.getInstance().getConnection();
+        String query  = "SELECT * FROM products";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        DatabaseControlUnit.getInstance().releaseConnection(connection);
+        return resultSet;
+    }
     @Override
     public void updateDatabase(String column, String value, String condition) throws SQLException {
         Connection connection = DatabaseControlUnit.getInstance().getConnection();
-        String query = "UPDATE products SET ? = ? WHERE?";
+        String query = "UPDATE products SET "+ column + " = ? WHERE id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1,column);
-        preparedStatement.setString(2,value);
-        preparedStatement.setString(3,condition);
+        preparedStatement.setString(1,value);
+        preparedStatement.setString(2,condition);
         preparedStatement.executeUpdate();
         DatabaseControlUnit.getInstance().releaseConnection(connection);
 
@@ -51,7 +87,7 @@ public class ProductService implements DatabaseManipulation <Product>{
         preparedStatement.setDouble(2,product.getPrice());
         preparedStatement.setDouble(3,product.getPriceMin());
         preparedStatement.setInt(4,product.getQuantity());
-        preparedStatement.setString(5,"'BlackFridayOFF'");
+        preparedStatement.setString(5,"BlackFridayOFF");
         preparedStatement.setDouble(6,product.getBlackFridayDiscount());
         preparedStatement.executeUpdate();
         DatabaseControlUnit.getInstance().releaseConnection(connection);

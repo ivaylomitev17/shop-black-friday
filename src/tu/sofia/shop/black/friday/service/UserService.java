@@ -1,13 +1,12 @@
 package tu.sofia.shop.black.friday.service;
-import tu.sofia.shop.black.friday.Exceptions.IncorrectPasswordException;
-import tu.sofia.shop.black.friday.Exceptions.IncorrectUsernameException;
+import tu.sofia.shop.black.friday.exceptions.IncorrectPasswordException;
+import tu.sofia.shop.black.friday.exceptions.IncorrectUsernameException;
 import tu.sofia.shop.black.friday.model.User;
 import tu.sofia.shop.black.friday.util.CreateSHA256;
 import tu.sofia.shop.black.friday.util.DatabaseControlUnit;
 import tu.sofia.shop.black.friday.util.DatabaseManipulation;
 
 import java.sql.*;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
